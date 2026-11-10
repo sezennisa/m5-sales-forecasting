@@ -21,15 +21,16 @@ Prévoir les ventes journalières de 30 490 produits Walmart (3 États, 10 magas
 6. Modèle **LightGBM** (objectif Tweedie, adapté aux ventes souvent nulles) avec early stopping
 7. Comparaison avec des modèles simples, importance des variables, fichier de soumission
 
-### Résultats (28 derniers jours)
+### Résultats
 
-| Méthode | RMSE |
-|---|---|
-| Toujours 0 | 3,916 |
-| Moyenne des 28 derniers jours | 2,323 |
-| **LightGBM** | **2,152** |
+| Période testée | Moyenne des 28 derniers jours (RMSE) | **LightGBM** (RMSE) | Gain |
+|---|---|---|---|
+| Jours 1886–1913 (backtest) | 2,298 | **2,107** | **-8,3 %** |
+| Jours 1914–1941 (validation) | 2,323 | **2,152** | **-7,4 %** |
 
-- LightGBM réduit l'erreur de **7,4 %** par rapport à la moyenne des 28 derniers jours.
+(Pour comparaison, prédire toujours 0 donne un RMSE de 3,916.)
+
+- LightGBM réduit l'erreur de **7 à 8 %** par rapport à la moyenne des 28 derniers jours, **sur les deux périodes** : le gain est stable.
 - Les variables les plus importantes sont les moyennes mobiles (60 et 28 jours), puis le produit et le jour de la semaine : la préparation des variables compte plus que le choix du modèle.
 - Le modèle suit bien le rythme de la semaine mais sous-estime les pics de ventes.
 
@@ -60,7 +61,7 @@ Forecast the daily sales of 30,490 Walmart products (3 states, 10 stores) for th
 ### Main results
 - Data reshaped to **31.8 million rows** (one product per day), with optimized memory usage.
 - Split **by date** and lags of at least 28 days to avoid data leakage, plus a backtest on a second period.
-- **LightGBM** (Tweedie objective) reduces the RMSE by **7.4%** compared to a 28-day moving average (2.152 vs 2.323).
+- **LightGBM** (Tweedie objective) reduces the RMSE by **8.3%** on the backtest period (2.107 vs 2.298) and by **7.4%** on the validation period (2.152 vs 2.323) compared to a 28-day moving average: the gain is stable.
 - Feature engineering mattered more than the choice of model: rolling means are by far the most important features.
 
 **Author:** Sezen Nisa Dikmen
